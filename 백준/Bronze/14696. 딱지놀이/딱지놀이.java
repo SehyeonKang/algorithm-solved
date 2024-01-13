@@ -13,12 +13,14 @@ public class Main {
 			int[] arrB = new int[5];
 			
 			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
 			while (st.hasMoreTokens()) {
 				int num = Integer.parseInt(st.nextToken());
 				arrA[num]++;
 			}
 			
 			st = new StringTokenizer(br.readLine());
+			int b = Integer.parseInt(st.nextToken());
 			while (st.hasMoreTokens()) {
 				int num = Integer.parseInt(st.nextToken());
 				arrB[num]++;
