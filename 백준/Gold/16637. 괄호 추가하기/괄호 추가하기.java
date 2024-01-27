@@ -15,12 +15,12 @@ public class Main {
 		N = Integer.parseInt(br.readLine());
 		char[] arr = br.readLine().toCharArray();
 		
-		recur(arr, arr[0] - '0', 1, true);
+		recur(arr, arr[0] - '0', 1);
 		
 		System.out.println(answer);
 	}
 	
-	static void recur(char[] arr, int sum, int idx, boolean check) {
+	static void recur(char[] arr, int sum, int idx) {
 		if (idx == N) {
 			answer = Math.max(sum, answer);
 			return;
@@ -28,14 +28,13 @@ public class Main {
 		
 		char c = arr[idx];
 		int num = arr[idx + 1] - '0';
-		if (check && idx + 2 < N) {
+		if (idx + 2 < N) {
 			char c2 = arr[idx + 2];
 			int num2 = arr[idx + 3] - '0';
 			
-			recur(arr, calculate2(sum, c, num, c2, num2), idx + 4, true);
+			recur(arr, calculate2(sum, c, num, c2, num2), idx + 4);
 		}
-		recur(arr, calculate1(sum, c, num), idx + 2, true);
-		recur(arr, calculate1(sum, c, num), idx + 2, false);
+		recur(arr, calculate1(sum, c, num), idx + 2);
 	}
 	
 	static int calculate1(int num1, char c, int num2) {
