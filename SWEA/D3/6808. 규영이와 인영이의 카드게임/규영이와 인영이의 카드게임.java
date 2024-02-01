@@ -1,111 +1,77 @@
-/////////////////////////////////////////////////////////////////////////////////////////////
-// 기본 제공코드는 임의 수정해도 관계 없습니다. 단, 입출력 포맷 주의
-// 아래 표준 입출력 예제 필요시 참고하세요.
-// 표준 입력 예제
-// int a;
-// double b;
-// char g;
-// String var;
-// long AB;
-// a = sc.nextInt();                           // int 변수 1개 입력받는 예제
-// b = sc.nextDouble();                        // double 변수 1개 입력받는 예제
-// g = sc.nextByte();                          // char 변수 1개 입력받는 예제
-// var = sc.next();                            // 문자열 1개 입력받는 예제
-// AB = sc.nextLong();                         // long 변수 1개 입력받는 예제
-/////////////////////////////////////////////////////////////////////////////////////////////
-// 표준 출력 예제
-// int a = 0;                            
-// double b = 1.0;               
-// char g = 'b';
-// String var = "ABCDEFG";
-// long AB = 12345678901234567L;
-//System.out.println(a);                       // int 변수 1개 출력하는 예제
-//System.out.println(b); 		       						 // double 변수 1개 출력하는 예제
-//System.out.println(g);		       						 // char 변수 1개 출력하는 예제
-//System.out.println(var);		       				   // 문자열 1개 출력하는 예제
-//System.out.println(AB);		       				     // long 변수 1개 출력하는 예제
-/////////////////////////////////////////////////////////////////////////////////////////////
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-public class Solution {
-    static int kyuWin;
-    static int inWin;
-
-    public static void main(String[] args) throws Exception {
-        //System.setIn(new FileInputStream("src/swea/res/input.txt"));
+class Solution {
+	
+	static boolean[] isSelected;
+	static boolean[] inputCheck;
+	static int[] inputs;
+	static int[] numbers;
+	static int winCnt;
+	static int loseCnt;
+	
+	public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
         StringTokenizer st;
         int T = Integer.parseInt(br.readLine());
 
-        for (int test_case = 1; test_case <= T; test_case++) {
-            boolean[] card = new boolean[19];
-            int[] kyu = new int[9];
-            int[] in = new int[9];
-            boolean[] check = new boolean[9];
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < 9; i++) {
-                int n = Integer.parseInt(st.nextToken());
-                card[n] = true;
-            }
-
-            int cnt1 = 0, cnt2 = 0;
-            for (int i = 1; i < 19; i++) {
-                if (card[i]) {
-                    kyu[cnt1++] = i;
-                } else
-                    in[cnt2++] = i;
-            }
-
-            kyuWin = 0;
-            inWin = 0;
-            for (int i = 0; i < 9; i++) {
-                check[i] = true;
-                if (kyu[0] > in[i]) {
-                    dfs(kyu, in, check, kyu[0] + in[i], 0, 1);
-                } else
-                    dfs(kyu, in, check, 0, kyu[0] + in[i], 1);
-                check[i] = false;
-            }
-            sb.append("#" + test_case + " " + kyuWin + " " + inWin + "\n");
+        for (int testCase = 1; testCase <= T; testCase++) {
+           st = new StringTokenizer(br.readLine());
+           isSelected = new boolean[19];
+           inputCheck = new boolean[19];
+           inputs = new int[9];
+           numbers = new int[9];
+           winCnt = 0;
+           loseCnt = 0;
+           
+           for (int i = 0; i < 9; i++) {
+        	   inputs[i] = Integer.parseInt(st.nextToken());
+        	   inputCheck[inputs[i]] = true;
+           }
+           
+           recur(0);
+           
+           sb.append("#" + testCase + " " + winCnt + " " + loseCnt + "\n");
         }
-
-        bw.write(sb.toString());
-        bw.flush();
+        
+        System.out.println(sb);
     }
-
-    private static void dfs(int[] kyu, int[] in, boolean[] check, int kyuScore, int inScore, int L) {
-        if (kyuScore > 85) {
-            int sum = 1;
-            for (int i = 1; i <= 9 - L; i++) {
-                sum *= i;
-            }
-            kyuWin += sum;
-            return;
-        } else if (inScore > 85) {
-            int sum = 1;
-            for (int i = 1; i <= 9 - L; i++) {
-                sum *= i;
-            }
-            inWin += sum;
-            return;
-        }
-
-        // 무승부
-        if (L == 9)
-            return;
-
-        for (int i = 0; i < 9; i++) {
-            if (!check[i]) {
-                check[i] = true;
-                if (kyu[L] > in[i]) {
-                    dfs(kyu, in, check, kyuScore + kyu[L] + in[i], inScore, L + 1);
-                } else
-                    dfs(kyu, in, check, kyuScore, inScore + kyu[L] + in[i], L + 1);
-                check[i] = false;
-            }
-        }
-    }
+	
+	private static void recur(int cnt) {
+		if (cnt == 9) {
+			int sum1 = 0;
+			int sum2 = 0;
+			for (int i = 0; i < 9; i++) {
+				int num1 = inputs[i];
+				int num2 = numbers[i];
+				
+				if (num1 > num2) {
+					sum1 += num1 + num2;
+				} else if (num2 > num1) {
+					sum2 += num1 + num2;
+				}
+			}
+			
+			if (sum1 > sum2) {
+				winCnt++;
+			} else if (sum1 < sum2) {
+				loseCnt++;
+			}
+			
+			return;
+		}
+		
+		for (int i = 1; i < 19; i++) {
+			if (isSelected[i] || inputCheck[i]) {
+				continue;
+			}
+			
+			isSelected[i] = true;
+			numbers[cnt] = i;
+			recur(cnt + 1);
+			isSelected[i] = false;
+		}
+	}
 }
