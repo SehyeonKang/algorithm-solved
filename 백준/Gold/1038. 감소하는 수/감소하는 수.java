@@ -16,9 +16,9 @@ public class Main {
 		
 		N = Integer.parseInt(br.readLine());
 		
-		for (int i = 0; i < 10; i++) {
-			int[] numbers = new int[i + 1];
-			recur(numbers, 0, i + 1);
+		for (int i = 1; i <= 10; i++) {
+			int[] numbers = new int[i];
+			recur(numbers, 0, i);
 		}
 		
 		if (answer.length() == 0) {
