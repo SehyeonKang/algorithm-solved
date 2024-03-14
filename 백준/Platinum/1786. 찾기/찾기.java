@@ -19,7 +19,7 @@ public class Main {
         
         getFailure();
         kmp();
-        System.out.println(answer + "\n" + sb);
+        //System.out.println(answer + "\n" + sb);
     }
 
     private static void getFailure() {
@@ -35,20 +35,29 @@ public class Main {
     }
     
     private static void kmp() {
-    	int j = 0;
-    	for (int i = 0; i < original.length(); i++) {
-    		while (j > 0 && original.charAt(i) != pattern.charAt(j)) {
-    			j = failure[j - 1];
-    		}
-    		if (original.charAt(i) == pattern.charAt(j)) {
-    			if (j == pattern.length() - 1) {
-    				answer++;
-    				sb.append(i - j + 1 + " ");
-    				j = failure[j];
-    			} else {
-    				j++;
-    			}
-    		}
-    	}
+    	int cnt = 0;
+        int j = 0;
+        for (int i = 0; i < original.length(); i++) {
+		        // 비교하는 값이 같을 때
+            if (original.charAt(i) == pattern.charAt(j)) {
+		            // 모든 문자가 같을 때
+                if (++j == pattern.length()) {
+                    cnt++;
+                    sb.append(i - pattern.length() + 2).append(" ");
+                    // 어디서 몇번째부터 비교할 지
+                    i -= j;
+                    j = j > 0 ? failure[j - 1] : 0;
+                    i += j + 1;
+                }
+            } else {
+	           // 비교하는 값이 다르면
+			         // 어디서 몇번째부터 비교할 지
+                i -= j;
+                j = j > 0 ? failure[j - 1] : 0;
+                i += j;
+            }
+        }
+        System.out.println(cnt);
+        System.out.println(sb);
     }
 }
