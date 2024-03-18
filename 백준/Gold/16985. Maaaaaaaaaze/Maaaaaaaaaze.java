@@ -180,6 +180,10 @@ public class Main {
     		}
     		
     		moveCnt++;
+            // 탐색 중 현재 구한 최소 이동 거리보다 크거나 같으면 탐색 종료
+    		if (moveCnt >= answer) {
+    			return;
+    		}
     	}
     	
     }
