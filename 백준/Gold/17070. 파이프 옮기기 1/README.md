@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 30928 KB, 시간: 512 ms
+메모리: 14276 KB, 시간: 128 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2024년 2월 2일 21:37:41
+2024년 2월 27일 15:53:13
 
 ### 문제 설명
 
@@ -42,7 +42,7 @@
 
 <p style="text-align: center;">세로</p>
 
-<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/ace5e982-6a52-4982-b51d-6c33c6b742bf/-/preview/" style="width: 886px; height: 203px;"></p>
+<p style="text-align: center;"><img alt="" src="" style="width: 886px; height: 203px;"></p>
 
 <p style="text-align: center;">대각선</p>
 
