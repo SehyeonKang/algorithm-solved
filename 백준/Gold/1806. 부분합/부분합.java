@@ -1,46 +1,53 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int S = Integer.parseInt(st.nextToken());
-        int[] arr = new int[N + 1];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int lt = 0;
-        int rt = 0;
-        int sum = 0;
-        int answer = Integer.MAX_VALUE;
-        while (rt <= N) {
-            if (sum >= S) {
-                answer = Math.min(answer, rt - lt);
-                lt++;
-                sum -= arr[lt];
-                continue;
-            }
-            rt++;
-            if (rt == N + 1) {
-                break;
-            }
-            sum += arr[rt];
-        }
+		int N = Integer.parseInt(st.nextToken());
+		int S = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		int[] arr = new int[N];
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
 
-        if (sum >= S) {
-            answer = Math.min(answer, rt - lt);
-        }
+		int lt = 0;
+		int rt = 1;
+		int partSum = arr[0];
+		int answer = Integer.MAX_VALUE;
+		while (rt < N) {
+			if (partSum == S) {
+				answer = Math.min(answer, rt - lt);
+				partSum += arr[rt];
+				rt++;
+			} else if (partSum > S) {
+				answer = Math.min(answer, rt - lt);
+				partSum -= arr[lt];
+				lt++;
+			} else {
+				partSum += arr[rt];
+				rt++;
+			}
+		}
 
-        if (answer == Integer.MAX_VALUE) {
-            answer = 0;
-        }
-        System.out.println(answer);
-    }
+		while (lt < N) {
+			if (partSum >= S) {
+				answer = Math.min(answer, rt - lt);
+			}
+			partSum -= arr[lt++];
+		}
+
+		if (answer == Integer.MAX_VALUE) {
+			System.out.println(0);
+		} else {
+			System.out.println(answer);
+		}
+	}
+
 }
