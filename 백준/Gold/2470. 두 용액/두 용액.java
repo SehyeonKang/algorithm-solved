@@ -1,45 +1,54 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-	
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
-		StringTokenizer st;
-		
-		int N = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		int N = Integer.parseInt(st.nextToken());
 		int[] arr = new int[N];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		Arrays.sort(arr);
-		
+
 		int lt = 0;
-		int rt = N - 1;
-		int minNum = Integer.MIN_VALUE;
-		int maxNum = Integer.MAX_VALUE;
-		int value = Integer.MAX_VALUE;
+		int rt = arr.length - 1;
+		int min = Integer.MAX_VALUE;
+		int[] answer = new int[2];
+		boolean check = false;
 		while (lt < rt) {
-			int sum = Math.abs(arr[lt] + arr[rt]);
-			if (sum < value) {
-				value = sum;
-				minNum = arr[lt];
-				maxNum = arr[rt];
-				if (value == 0) {
-					break;
+			int abs = Math.abs(arr[lt] + arr[rt]);
+			if (abs < min) {
+				answer[0] = arr[lt];
+				answer[1] = arr[rt];
+				min = abs;
+			}
+
+			if (!check) {
+				if (Math.abs(arr[lt]) <= Math.abs(arr[rt])) {
+					rt--;
+				} else {
+					lt++;
+					check = !check;
+				}
+			} else {
+				if (Math.abs(arr[rt]) <= Math.abs(arr[lt])) {
+					lt++;
+				} else {
+					rt--;
+					check = !check;
 				}
 			}
-			if (Math.abs(arr[lt]) > Math.abs(arr[rt])) {
-				lt++;
-			} else {
-				rt--;
-			}
+
 		}
-		System.out.println(minNum + " " + maxNum);
+
+		System.out.println(answer[0] + " " + answer[1]);
 	}
+
 }
