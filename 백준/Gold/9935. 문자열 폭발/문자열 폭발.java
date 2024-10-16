@@ -1,48 +1,49 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
         StringTokenizer st;
-        
+
+        String s = br.readLine();
+        String bomb = br.readLine();
         Stack<Character> stack = new Stack<>();
-        char[] arr = br.readLine().toCharArray();
-        String pattern = br.readLine();
-        
-        for (int i = 0; i < arr.length; i++) {
-        	stack.push(arr[i]);
-        	while (stack.size() >= pattern.length()) {
-        		boolean flag = true;
-        		for (int j = 0; j < pattern.length(); j++) {
-        			if (stack.elementAt(stack.size() - pattern.length() + j) != pattern.charAt(j)) {
-        				flag = false;
-        				break;
-        			}
-        		}
-        		// 문자열이 동일한 경우
-        		if (flag) {
-        			for (int j = 0; j < pattern.length(); j++) {
-        				stack.pop();
-        			}
-        		} else {
-        			break;
-        		}
-        	}
+        for (int i = 0; i < s.length(); i++) {
+            stack.push(s.charAt(i));
+
+            while (stack.size() >= bomb.length()) {
+                boolean check = true;
+                for (int j = stack.size() - 1; j >= stack.size() - bomb.length(); j--) {
+                    if (stack.elementAt(j) != bomb.charAt(j - stack.size() + bomb.length())) {
+                        check = false;
+                        break;
+                    }
+                }
+
+                if (check) {
+                    for (int j = 0; j < bomb.length(); j++) {
+                        stack.pop();
+                    }
+                } else {
+                    break;
+                }
+            }
         }
-        
+
         if (stack.isEmpty()) {
-        	System.out.println("FRULA");
+            System.out.println("FRULA");
         } else {
-        	while (!stack.isEmpty()) {
-        		sb.append(stack.pop());
-        	}
-        	sb.reverse();
-        	System.out.println(sb);
+            int stackSize = stack.size();
+            for (int i = 0; i < stackSize; i++) {
+                sb.append(stack.pop());
+            }
+            System.out.println(sb.reverse());
         }
+
     }
+
 }
